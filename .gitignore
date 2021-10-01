@@ -5,3 +5,6 @@
 /docker/bin
 /docker/www
 /www
+/PodList.json
+/PodListMetrics.json
+/spec
