@@ -104,8 +104,17 @@ Finally you should be able to access the web site. By filling the token and name
 ![](0.png)
 
 ## Screenshots
-![](1.png)
-![](2.png)
+
+
+### List of Pods
+![List of Pods](1.png)
+
+### Files within Pods
+![Files within Pods](2.png)
+
+### View File (or you can download as well)
 ![](3.png)
+
+### Check Processes
 ![](4.png)
 
