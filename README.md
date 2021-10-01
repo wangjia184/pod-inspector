@@ -1,7 +1,7 @@
 # Kubernetes Pod Inspector
 
-Unlike other dashboardes for Kubernetes(Lens / Rancher / etc), Kubernetes Pod Inspector allows to check the file system and processes within running Linux Pods without using kubectl. 
-This is useful when we want to check the files within pods spwaned by StatefulSet.
+Unlike other dashboardes for Kubernetes(Lens / Rancher / etc), Kubernetes Pod Inspector allows to check the file system and processes within running Linux pods without using kubectl. 
+This is useful when we want to check the files within volumes mounted by pods
 
 
 ## How to Deploy
