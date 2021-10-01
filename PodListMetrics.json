@@ -1,0 +1,302 @@
+{
+	"metadata": {},
+	"items": [{
+		"metadata": {
+			"name": "bonus-adapter-stage-667bcb4b98-d2hxn",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app": "bonus-adapter",
+				"pod-template-hash": "667bcb4b98"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:17Z",
+		"window": "17s",
+		"containers": [{
+			"name": "bonus-adapter",
+			"usage": {
+				"cpu": "1704335n",
+				"memory": "284784Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "etcd-stage-0",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app.kubernetes.io/instance": "etcd-stage",
+				"app.kubernetes.io/managed-by": "Tiller",
+				"app.kubernetes.io/name": "etcd",
+				"controller-revision-hash": "etcd-stage-d95d76bcf",
+				"helm.sh/chart": "etcd-4.9.5",
+				"statefulset.kubernetes.io/pod-name": "etcd-stage-0"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:18Z",
+		"window": "15s",
+		"containers": [{
+			"name": "etcd",
+			"usage": {
+				"cpu": "42246351n",
+				"memory": "50516Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "etcd-stage-1",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app.kubernetes.io/instance": "etcd-stage",
+				"app.kubernetes.io/managed-by": "Tiller",
+				"app.kubernetes.io/name": "etcd",
+				"controller-revision-hash": "etcd-stage-d95d76bcf",
+				"helm.sh/chart": "etcd-4.9.5",
+				"statefulset.kubernetes.io/pod-name": "etcd-stage-1"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:13Z",
+		"window": "11s",
+		"containers": [{
+			"name": "etcd",
+			"usage": {
+				"cpu": "34443606n",
+				"memory": "45332Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "etcd-stage-2",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app.kubernetes.io/instance": "etcd-stage",
+				"app.kubernetes.io/managed-by": "Tiller",
+				"app.kubernetes.io/name": "etcd",
+				"controller-revision-hash": "etcd-stage-d95d76bcf",
+				"helm.sh/chart": "etcd-4.9.5",
+				"statefulset.kubernetes.io/pod-name": "etcd-stage-2"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:13Z",
+		"window": "17s",
+		"containers": [{
+			"name": "etcd",
+			"usage": {
+				"cpu": "30310037n",
+				"memory": "48404Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "proxy-server",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z"
+		},
+		"timestamp": "2021-09-21T11:31:07Z",
+		"window": "14s",
+		"containers": [{
+			"name": "frpc",
+			"usage": {
+				"cpu": "13651944n",
+				"memory": "11704Ki"
+			}
+		}, {
+			"name": "squid",
+			"usage": {
+				"cpu": "134077n",
+				"memory": "194280Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "redis-stage-master-0",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app": "redis",
+				"chart": "redis-10.7.17",
+				"controller-revision-hash": "redis-stage-master-5b5886cc59",
+				"release": "redis-stage",
+				"role": "master",
+				"statefulset.kubernetes.io/pod-name": "redis-stage-master-0"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:15Z",
+		"window": "13s",
+		"containers": [{
+			"name": "redis",
+			"usage": {
+				"cpu": "28687907n",
+				"memory": "13104Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "ubs-api-stage-0",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app": "ubs-api",
+				"controller-revision-hash": "ubs-api-stage-6889cfc545",
+				"statefulset.kubernetes.io/pod-name": "ubs-api-stage-0"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:21Z",
+		"window": "19s",
+		"containers": [{
+			"name": "ubs-api",
+			"usage": {
+				"cpu": "24113763n",
+				"memory": "672096Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "ubs-silo-qa-0",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app": "ubs-silo",
+				"controller-revision-hash": "ubs-silo-qa-5788db89bb",
+				"statefulset.kubernetes.io/pod-name": "ubs-silo-qa-0",
+				"svc": "orleans-qa"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:15Z",
+		"window": "11s",
+		"containers": [{
+			"name": "ubs-silo",
+			"usage": {
+				"cpu": "188904137n",
+				"memory": "1482848Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "ubs-silo-qa-1",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app": "ubs-silo",
+				"controller-revision-hash": "ubs-silo-qa-5788db89bb",
+				"statefulset.kubernetes.io/pod-name": "ubs-silo-qa-1",
+				"svc": "orleans-qa"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:06Z",
+		"window": "17s",
+		"containers": [{
+			"name": "ubs-silo",
+			"usage": {
+				"cpu": "226479844n",
+				"memory": "1474224Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "ubs-silo-qa-2",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app": "ubs-silo",
+				"controller-revision-hash": "ubs-silo-qa-5788db89bb",
+				"statefulset.kubernetes.io/pod-name": "ubs-silo-qa-2",
+				"svc": "orleans-qa"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:20Z",
+		"window": "18s",
+		"containers": [{
+			"name": "ubs-silo",
+			"usage": {
+				"cpu": "204529660n",
+				"memory": "1436472Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "ubs-silo-qa-3",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app": "ubs-silo",
+				"controller-revision-hash": "ubs-silo-qa-5788db89bb",
+				"statefulset.kubernetes.io/pod-name": "ubs-silo-qa-3",
+				"svc": "orleans-qa"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:20Z",
+		"window": "20s",
+		"containers": [{
+			"name": "ubs-silo",
+			"usage": {
+				"cpu": "199840u",
+				"memory": "1473440Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "ubs-silo-qa-4",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app": "ubs-silo",
+				"controller-revision-hash": "ubs-silo-qa-5788db89bb",
+				"statefulset.kubernetes.io/pod-name": "ubs-silo-qa-4",
+				"svc": "orleans-qa"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:08Z",
+		"window": "19s",
+		"containers": [{
+			"name": "ubs-silo",
+			"usage": {
+				"cpu": "207006676n",
+				"memory": "1504128Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "ubs-silo-stage-0",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app": "ubs-silo",
+				"controller-revision-hash": "ubs-silo-stage-f5dccc6cd",
+				"statefulset.kubernetes.io/pod-name": "ubs-silo-stage-0",
+				"svc": "orleans-stage"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:11Z",
+		"window": "14s",
+		"containers": [{
+			"name": "ubs-silo",
+			"usage": {
+				"cpu": "227925n",
+				"memory": "132628Ki"
+			}
+		}]
+	}, {
+		"metadata": {
+			"name": "ubs-txn-stage-0",
+			"namespace": "stage",
+			"creationTimestamp": "2021-09-21T11:31:31Z",
+			"labels": {
+				"app": "ubs-txn",
+				"controller-revision-hash": "ubs-txn-stage-866899ccb6",
+				"statefulset.kubernetes.io/pod-name": "ubs-txn-stage-0"
+			}
+		},
+		"timestamp": "2021-09-21T11:31:10Z",
+		"window": "10s",
+		"containers": [{
+			"name": "ubs-txn",
+			"usage": {
+				"cpu": "22144629n",
+				"memory": "675228Ki"
+			}
+		}]
+	}]
+}
