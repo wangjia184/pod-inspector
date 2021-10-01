@@ -15,7 +15,7 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -tags netgo -a -installsuffix cgo
 # docker buildx create --use
 
 cd docker
-IMAGE_URI=wangjia184/pod-inspector:20210930
+IMAGE_URI=wangjia184/pod-inspector:20211001
 
 docker buildx build -t ${IMAGE_URI} \
   --platform linux/amd64,linux/arm64/v8 --push .
