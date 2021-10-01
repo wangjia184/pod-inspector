@@ -98,3 +98,14 @@ spec:
                 number: 80
 
 ```
+
+Finally you should be able to access the web site. By filling the token and namespace of K8S cluster, it will connect to the same cluster the pod is running.  Token can be retrieved in `~/.kube/config` file.
+
+![](0.png)
+
+## Screenshots
+![](1.png)
+![](2.png)
+![](3.png)
+![](4.png)
+
