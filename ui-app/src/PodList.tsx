@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext, useRef } from 'react';
-import { useBoolean } from '@fluentui/react-hooks';
+import { useBoolean, useSetTimeout } from '@fluentui/react-hooks';
 import { FontIcon } from '@fluentui/react/lib/Icon';
 import { MessageBar, MessageBarType } from '@fluentui/react';
 import { DetailsListLayoutMode, SelectionMode,  IColumn } from '@fluentui/react/lib/DetailsList';
@@ -12,6 +12,7 @@ import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 import { Stack, IStackTokens } from '@fluentui/react';
 import { K8sToken, K8sNamespace } from './utils'
 import { mergeStyleSets } from '@fluentui/react/lib/Styling';
+
 import IPod from './dto'
 import Pod from './Pod'
 import './PodList.css'
@@ -22,7 +23,8 @@ const classNames = mergeStyleSets({
       direction : 'ltr',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'flex-end'
+      alignItems: 'flex-end',
+      fontFamily: "monospace, 'Courier New', Courier",
     } 
   },
 });
@@ -36,12 +38,11 @@ export interface IPodListState {
 
 // sort function
 type FunctionType<T> = (items: T[], columnKey: string, isSortedDescending?: boolean) => T[];
-const copyAndSort : FunctionType<IPod> = (items, columnKey, isSortedDescending ) => {
-  const key = columnKey as keyof IPod;
-  return items.slice(0).sort((a: IPod, b: IPod) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
-};
+
 
 type ColumnClickHandler = (ev: React.MouseEvent<HTMLElement>, column: IColumn) => void;
+
+var timer : number = 0;
 
 const PodList: React.FunctionComponent = () => {
   const k8sToken = useContext(K8sToken);
@@ -55,8 +56,17 @@ const PodList: React.FunctionComponent = () => {
   const [isPanelOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
   const columnsHolder = useRef<IColumn[]>([]);
   const columnClickHandler = useRef<ColumnClickHandler>((ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => {});
+  const sortedColumn = useRef<string>("name");
+  const sortedDescending = useRef<boolean>(false);
 
+  const { setTimeout, clearTimeout } = useSetTimeout();
 
+  const copyAndSort : FunctionType<IPod> = (items, columnKey, isSortedDescending ) => {
+    sortedColumn.current = columnKey;
+    sortedDescending.current = isSortedDescending ? true : false;
+    const key = columnKey as keyof IPod;
+    return items.slice(0).sort((a: IPod, b: IPod) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
+  };
 
   useEffect(() => {
     columnClickHandler.current = (ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => {
@@ -131,7 +141,7 @@ const PodList: React.FunctionComponent = () => {
           headerClassName : 'DetailsListColumnRight',
           onRender: (pod: IPod) => {
             var count = 0;
-            for( var key in pod.containers ){
+            for( var _ in pod.containers ){
               count++;
             }
             var text = pod.ready + ' / ' + count;
@@ -167,7 +177,7 @@ const PodList: React.FunctionComponent = () => {
           key: 'pod-cpu',
           name: 'CPU',
           fieldName: 'cpuPercentage',
-          minWidth: 120,
+          minWidth: 200,
           maxWidth: 450,
           isResizable: true,
           isCollapsible: true,
@@ -189,7 +199,7 @@ const PodList: React.FunctionComponent = () => {
           key: 'pod-ram',
           name: 'Memory',
           fieldName: 'ramPercentage',
-          minWidth: 120,
+          minWidth: 200,
           maxWidth: 450,
           isResizable: true,
           isCollapsible: true,
@@ -252,21 +262,17 @@ const PodList: React.FunctionComponent = () => {
       ];
   }, []);
 
-
-  useEffect(() => {
+  const reloadPods = useCallback( () => {
     var url =  (process.env.REACT_APP_BASE_URL || '').trim() + "/api/pods?";
-    url += new URLSearchParams({
-      token : k8sToken,
-      namespace : k8sNamespace
-    }).toString();
+    url += new URLSearchParams({ token : k8sToken, namespace : k8sNamespace }).toString();
 
     const fetchData = async () => {
         try {
             const response = await fetch(url, {mode:'cors'});
             const json = await response.json();
-            if(Array.isArray(json)) {
+            if(Array.isArray(json)) { // normal response
               setPods(
-                copyAndSort( json,  "name", false )
+                copyAndSort( json,  sortedColumn.current, sortedDescending.current )
               );
               setErrorMessage(undefined);
             } else {
@@ -276,9 +282,16 @@ const PodList: React.FunctionComponent = () => {
         } catch (error) {
             setErrorMessage('GET ' + url + ' failed. ' + error);
         }
+        clearTimeout(timer);
+        timer = setTimeout(reloadPods, 5000);
     };
     fetchData();
-  }, [k8sToken, k8sNamespace]);
+  }, [k8sToken, k8sNamespace, clearTimeout, setTimeout]);
+
+
+  useEffect(() => {
+    reloadPods();
+  }, [reloadPods]);
 
 
 

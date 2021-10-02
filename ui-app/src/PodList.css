@@ -6,3 +6,4 @@
 }
 
 .PodList .ms-DetailsRow-fields { align-items: center !important;}
+.PodList .ms-DetailsRow-cell { font-size: 14px; font-family: monospace, 'Courier New', Courier;}
