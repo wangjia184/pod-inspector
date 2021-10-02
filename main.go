@@ -16,10 +16,12 @@ import (
 
 func main() {
 
+	var username, password, uiPath string
 	port := *flag.Int("port", 8080, "HTTP port to listen")
-	uiPath := *flag.String("ui-path", "./www/", "Path of static web sites")
-	username := *flag.String("user", "", "Username to enable basic-authentication")
-	password := *flag.String("password", "", "Password to enable basic-authentication")
+
+	flag.StringVar(&username, "user", "", "Username to enable basic-authentication")
+	flag.StringVar(&password, "password", "", "Password to enable basic-authentication")
+	flag.StringVar(&uiPath, "ui-path", "./www/", "Path of static web sites")
 	flag.Parse()
 
 	gin.SetMode(gin.ReleaseMode)
