@@ -44,7 +44,7 @@ const classNames = mergeStyleSets({
   },
   links: {
     position: 'absolute',
-    right: '10px',
+    right: '30px',
     bottom: '10px'
   }
 

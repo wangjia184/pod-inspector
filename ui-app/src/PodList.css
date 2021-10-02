@@ -1,9 +1,8 @@
 .DetailsListColumnRight .ms-DetailsHeader-cellTitle { flex-direction : row-reverse !important; }
-.DetailsListColumnRight > span { padding-right: 24px !important; }
 
 .container{
   display: flex;
-  align-items: center;
+  align-items: center; 
 }
 
 .PodList .ms-DetailsRow-fields { align-items: center !important;}

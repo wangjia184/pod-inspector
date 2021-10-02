@@ -39,6 +39,7 @@ type K8sPod struct {
 	Name          string                  `json:"name"`
 	Status        corev1.PodPhase         `json:"status"`
 	Age           int64                   `json:"age"`
+	Ready         int64                   `json:"ready"`
 	HostIp        string                  `json:"hostIp"`
 	PodIp         string                  `json:"podIp"`
 	CpuUsage      int64                   `json:"cpuUsage"` // 1 Core = 1000 milli
@@ -78,6 +79,7 @@ func GetPods(namespace string, token string) ([]K8sPod, error) {
 				HostIp:     item.Status.HostIP,
 				PodIp:      item.Status.PodIP,
 				Containers: make(map[string]K8sContainer),
+				Ready:      0,
 			}
 
 			if item.Status.StartTime != nil {
@@ -88,6 +90,9 @@ func GetPods(namespace string, token string) ([]K8sPod, error) {
 				pod.Containers[cs.Name] = K8sContainer{
 					Ready:        cs.Ready,
 					RestartCount: cs.RestartCount,
+				}
+				if cs.Ready {
+					pod.Ready++
 				}
 			}
 

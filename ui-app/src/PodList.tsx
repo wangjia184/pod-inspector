@@ -11,10 +11,21 @@ import { Text } from '@fluentui/react/lib/Text';
 import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 import { Stack, IStackTokens } from '@fluentui/react';
 import { K8sToken, K8sNamespace } from './utils'
+import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 import IPod from './dto'
 import Pod from './Pod'
 import './PodList.css'
 
+const classNames = mergeStyleSets({
+  progressBar: {
+    '.ms-ProgressIndicator-itemName': {
+      direction : 'ltr',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-end'
+    } 
+  },
+});
 
 
 
@@ -85,7 +96,7 @@ const PodList: React.FunctionComponent = () => {
           name: 'Pod Name',
           fieldName: 'name',
           minWidth: 210,
-          maxWidth: 350,
+          maxWidth: 450,
           isRowHeader: true,
           isResizable: true,
           isSorted: true,
@@ -101,20 +112,41 @@ const PodList: React.FunctionComponent = () => {
           name: 'Status',
           fieldName: 'status',
           minWidth: 70,
-          maxWidth: 90,
+          maxWidth: 100,
           isResizable: true,
           onColumnClick: (ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => { columnClickHandler.current(ev, column); },
           data: 'string',
           isPadded: true,
         },
         {
+          key: 'pod-ready',
+          name: 'Ready',
+          fieldName: 'ready',
+          minWidth: 70,
+          maxWidth: 100,
+          isResizable: true,
+          onColumnClick: (ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => { columnClickHandler.current(ev, column); },
+          data: 'number',
+          isPadded: false,
+          headerClassName : 'DetailsListColumnRight',
+          onRender: (pod: IPod) => {
+            var count = 0;
+            for( var key in pod.containers ){
+              count++;
+            }
+            var text = pod.ready + ' / ' + count;
+            return <span style={{ display: 'block', textAlign: 'right' }}>{text}</span>;
+          },
+        },
+        {
           key: 'pod-age',
           name: 'Age',
           fieldName: 'age',
           minWidth: 70,
-          maxWidth: 90,
+          maxWidth: 100,
           isResizable: true,
           isCollapsible: true,
+          isPadded: false,
           data: 'number',
           onColumnClick: (ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => { columnClickHandler.current(ev, column); },
           headerClassName : 'DetailsListColumnRight',
@@ -130,21 +162,26 @@ const PodList: React.FunctionComponent = () => {
               age = pod.age.toString() + ' sec';
             return <span style={{ display: 'block', textAlign: 'right' }}>{age}</span>;
           },
-          isPadded: true,
         },
         {
           key: 'pod-cpu',
           name: 'CPU',
           fieldName: 'cpuPercentage',
           minWidth: 120,
-          maxWidth: 250,
+          maxWidth: 450,
           isResizable: true,
           isCollapsible: true,
           data: 'number',
+          headerClassName : 'DetailsListColumnRight',
           onColumnClick: (ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => { columnClickHandler.current(ev, column); },
           onRender: (pod: IPod) => {
-            var text = pod.cpuUsage + ' / ' + (pod.cpuLimit > 0 ? pod.cpuLimit : '?') + ' millicores'
-            return <ProgressIndicator label={text} percentComplete={pod.cpuPercentage} />
+            var text : string;
+            if( pod.cpuLimit > 0 ) {
+              text = (pod.cpuUsage/1000.0).toFixed(3) + ' / ' +  (pod.cpuLimit/1000.0).toFixed(3) + ' core' 
+            } else {
+              text = (pod.cpuUsage/1000.0).toFixed(3) + ' core (no limit)' 
+            }
+            return <div style={{ direction: 'rtl' }}><ProgressIndicator label={text} percentComplete={pod.cpuPercentage} className={classNames.progressBar} /></div>
           },
           isPadded: false,
         },
@@ -153,14 +190,32 @@ const PodList: React.FunctionComponent = () => {
           name: 'Memory',
           fieldName: 'ramPercentage',
           minWidth: 120,
-          maxWidth: 250,
+          maxWidth: 450,
           isResizable: true,
           isCollapsible: true,
           data: 'number',
+          headerClassName : 'DetailsListColumnRight',
           onColumnClick: (ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => { columnClickHandler.current(ev, column); },
           onRender: (pod: IPod) => {
-            var text = pod.ramUsage + ' / ' +  (pod.ramLimit > 0 ? pod.ramLimit : '?') + ' KB'
-            return <ProgressIndicator label={text} percentComplete={pod.ramPercentage} />
+            var text : string;
+            if( pod.ramLimit > 0 ) {
+              if( pod.ramLimit >= 1024 * 1024 ) {
+                text = (pod.ramUsage/1048576.0).toFixed(2) + ' / ' + (pod.ramLimit/1048576.0).toFixed(2) + ' GB' 
+              } else if( pod.ramLimit >= 1024 ) {
+                text = (pod.ramUsage/1048576.0).toFixed(2) + ' / ' + (pod.ramLimit/1048576.0).toFixed(2) + ' MB' 
+              } else   {
+                text = pod.ramUsage + ' / ' +  pod.ramLimit + ' KB' 
+              }
+            } else {
+              if( pod.ramUsage >= 1024 * 1024 ) {
+                text = (pod.ramUsage/1048576.0).toFixed(2) + ' GB (no limit)' 
+              } else if( pod.ramUsage >= 1024 ) {
+                text = (pod.ramUsage/1048576.0).toFixed(2) + ' MB (no limit)' 
+              } else   {
+                text = pod.ramUsage + ' KB (no limit)' 
+              }
+            }
+            return <div style={{ direction: 'rtl' }}><ProgressIndicator label={text} percentComplete={pod.ramPercentage} className={classNames.progressBar} /></div>
           },
           isPadded: false,
         },
@@ -169,22 +224,30 @@ const PodList: React.FunctionComponent = () => {
           name: 'Pod IP',
           fieldName: 'podIp',
           minWidth: 70,
-          maxWidth: 90,
+          maxWidth: 290,
           isResizable: true,
           isCollapsible: true,
           data: 'string',
+          headerClassName : 'DetailsListColumnRight',
           onColumnClick: (ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => { columnClickHandler.current(ev, column); },
+          onRender: (pod: IPod) => {
+            return <span style={{ display: 'block', textAlign: 'right' }}>{pod.podIp}</span>;
+          },
         },
         {
           key: 'host-ip',
           name: 'Host IP',
           fieldName: 'hostIp',
           minWidth: 70,
-          maxWidth: 90,
+          maxWidth: 290,
           isResizable: true,
           isCollapsible: true,
           data: 'string',
+          headerClassName : 'DetailsListColumnRight',
           onColumnClick: (ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => { columnClickHandler.current(ev, column); },
+          onRender: (pod: IPod) => {
+            return <span style={{ display: 'block', textAlign: 'right' }}>{pod.hostIp}</span>;
+          },
         },
       ];
   }, []);

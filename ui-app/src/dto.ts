@@ -21,6 +21,7 @@ export default interface IPod {
   name: string;
   status: string;
   age: number;
+  ready: number;
   hostIp: string;
   podIp: string;
   cpuUsage: number;
