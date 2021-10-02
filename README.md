@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: pod-inspector
-        image: docker.io/wangjia184/pod-inspector:20211001
+        image: docker.io/wangjia184/pod-inspector:20211002
         args: ["-port", "8080", "-user", "", "-password", ""]
         ports:
         - containerPort: 8080 
