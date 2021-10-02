@@ -60,9 +60,15 @@ const FileViewer: React.FunctionComponent<IFileViewerComponentProps> = ({ podNam
     const fetchData = async () => {
         try {
             const response = await fetch(url, {mode:'cors'});
-            const text = await response.text();
+            var text = await response.text();
             if(currentPodName !== podName || currencyContainerName !== containerName || currentPath !== filePath){
               return; // response is not for the current UI
+            }
+            // escape \033[99m
+            
+            if(text){
+              const regex = /\033[^m\n]{1,20}m/g;
+              text = text.replaceAll(regex, '');  // replace escapsed letters
             }
             setContent(text);
 

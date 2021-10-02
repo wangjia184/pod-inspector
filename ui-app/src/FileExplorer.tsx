@@ -117,7 +117,7 @@ const FileExplorer: React.FunctionComponent<IFileExplorerComponentProps> = ({ po
   const k8sToken = useContext(K8sToken);
   const k8sNamespace = useContext(K8sNamespace);
   const pathRef = useRef("/");
-  const parentPathRef = useRef("/");
+
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [files, setFiles] = useState<IPodFile[]>([]);
@@ -170,7 +170,7 @@ const FileExplorer: React.FunctionComponent<IFileExplorerComponentProps> = ({ po
     window.open(url, "_blank");
   }, [containerName, pod, k8sToken, k8sNamespace]);
 
-  // download file
+  // view file
   const viewFile = useCallback( (file:IPodFile) => {
     setSelectedFile(file);
     openPanel();
@@ -343,26 +343,32 @@ const FileExplorer: React.FunctionComponent<IFileExplorerComponentProps> = ({ po
       if(file && !isLoading){
         if(file.isDir){
           pathRef.current = file.path;
-          let index = file.path.lastIndexOf('/');
-          if(index >= 0)
-            parentPathRef.current = file.path.substr(0, index) + '/';
-          else
-            parentPathRef.current = "/";
+
           
           loadFileList();
-        } else {
-
+        } else { // this is a file
+          let index = file.name.lastIndexOf('.');
+          let extension = index > 0 ? file.name.substr(index+1) : file.name;
+          if( extension === "txt" || extension === "log" || extension === "json" || extension === "yml" || extension === "yaml" || extension === "ini" || extension === "js" || extension === "sh" || extension === "css" || extension === "csv" ){
+            viewFile(file);
+          } else {
+            downloadFile(file);
+          }
         }
       }
     },
-    [loadFileList, isLoading],
+    [loadFileList, viewFile, downloadFile, isLoading],
   );
 
  
   // go to parent folder
   const onBtnParentClicked = useCallback( () => {
     if(!isLoading) {
-      pathRef.current = parentPathRef.current;
+      let path = pathRef.current;
+      path = path.replace(/\/$/, '');
+      let index = path.lastIndexOf('/');
+      if(index >= 0)
+        pathRef.current = path.substr(0, index) + '/';
       loadFileList();
     }
     
