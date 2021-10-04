@@ -24,4 +24,4 @@ EXPOSE 8080/tcp
 
 #USER app_user
 ENTRYPOINT ["/app/pod-inspector"]
-CMD ["-port", "8080", "-ui-path", "/app/www"]
+

@@ -212,7 +212,7 @@ const PodList: React.FunctionComponent = () => {
               if( pod.ramLimit >= 1024 * 1024 ) {
                 text = (pod.ramUsage/1048576.0).toFixed(1) + ' / ' + (pod.ramLimit/1048576.0).toFixed(1) + ' GB' 
               } else if( pod.ramLimit >= 1024 ) {
-                text = (pod.ramUsage/1024.0).toFixed(1) + ' / ' + (pod.ramLimit/1048576.0).toFixed(1) + ' MB' 
+                text = (pod.ramUsage/1024.0).toFixed(1) + ' / ' + (pod.ramLimit/1024.0).toFixed(1) + ' MB' 
               } else   {
                 text = pod.ramUsage + ' / ' +  pod.ramLimit + ' KB' 
               }
