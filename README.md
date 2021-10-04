@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: pod-inspector
-        image: docker.io/wangjia184/pod-inspector:20211002
+        image: docker.io/wangjia184/pod-inspector:latest
         args: ["-port", "8080", "-user", "", "-password", ""]
         ports:
         - containerPort: 8080 
@@ -63,7 +63,7 @@ spec:
 
 It listens on port 8080 for HTTP service. You can specify `user` and `password` in arguments to enable http authentication.
 
-Next, expose port 8080 so that you can access it. Here is just an example:
+Next, expose port 8080 so that you can access it. Here is an example:
 
 ```
 apiVersion: v1
