@@ -187,9 +187,9 @@ const PodList: React.FunctionComponent = () => {
           onRender: (pod: IPod) => {
             var text : string;
             if( pod.cpuLimit > 0 ) {
-              text = (pod.cpuUsage/1000.0).toFixed(2) + ' / ' +  (pod.cpuLimit/1000.0).toFixed(1) + ' core' 
+              text = (pod.cpuUsage/1000.0).toFixed(1) + ' / ' +  (pod.cpuLimit/1000.0).toFixed(1) + ' core' 
             } else {
-              text = (pod.cpuUsage/1000.0).toFixed(2) + ' core (no limit)' 
+              text = (pod.cpuUsage/1000.0).toFixed(1) + ' core (no limit)' 
             }
             return <div style={{ direction: 'rtl' }}><ProgressIndicator label={text} percentComplete={pod.cpuPercentage} className={classNames.progressBar} /></div>
           },
@@ -210,17 +210,17 @@ const PodList: React.FunctionComponent = () => {
             var text : string;
             if( pod.ramLimit > 0 ) {
               if( pod.ramLimit >= 1024 * 1024 ) {
-                text = (pod.ramUsage/1048576.0).toFixed(2) + ' / ' + (pod.ramLimit/1048576.0).toFixed(2) + ' GB' 
+                text = (pod.ramUsage/1048576.0).toFixed(1) + ' / ' + (pod.ramLimit/1048576.0).toFixed(1) + ' GB' 
               } else if( pod.ramLimit >= 1024 ) {
-                text = (pod.ramUsage/1024.0).toFixed(2) + ' / ' + (pod.ramLimit/1048576.0).toFixed(2) + ' MB' 
+                text = (pod.ramUsage/1024.0).toFixed(1) + ' / ' + (pod.ramLimit/1048576.0).toFixed(1) + ' MB' 
               } else   {
                 text = pod.ramUsage + ' / ' +  pod.ramLimit + ' KB' 
               }
             } else {
               if( pod.ramUsage >= 1024 * 1024 ) {
-                text = (pod.ramUsage/1048576.0).toFixed(2) + ' GB (no limit)' 
+                text = (pod.ramUsage/1048576.0).toFixed(1) + ' GB (no limit)' 
               } else if( pod.ramUsage >= 1024 ) {
-                text = (pod.ramUsage/1024.0).toFixed(2) + ' MB (no limit)' 
+                text = (pod.ramUsage/1024.0).toFixed(1) + ' MB (no limit)' 
               } else   {
                 text = pod.ramUsage + ' KB (no limit)' 
               }

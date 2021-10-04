@@ -17,6 +17,7 @@ import {
 import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 import { getStorageValue, useLocalStorage, K8sToken, K8sNamespace } from './utils'
 import PodList from './PodList';
+import { VERSION } from './version';
 import './App.css';
 
 
@@ -46,8 +47,10 @@ const classNames = mergeStyleSets({
     position: 'absolute',
     right: '30px',
     bottom: '10px'
+  },
+  versionLink : {
+    fontSize : '12px'
   }
-
 });
 
 const dialogStyles = { main: { maxWidth: 1024, minWidth: 800 } };
@@ -111,7 +114,7 @@ function App() {
       <Router>
         <div className={classNames.pageHeader}>
           <img src="/favicon.png" className={classNames.logo} alt="K8S Logo" />
-          <div className={classNames.pageHeaderTitle}><Link href="https://github.com/wangjia184/pod-inspector" target="_blank">Kubernetes Pod Inspector</Link></div>
+          <div className={classNames.pageHeaderTitle}>Kubernetes Pod Inspector  <Link className={classNames.versionLink} href="https://github.com/wangjia184/pod-inspector" target="_blank">{VERSION}</Link></div>
           <div className={classNames.links}>Namespace : &#160; 
             <Link onClick={toggleHideDialog}>
               {namespace ? namespace : 'default' }
