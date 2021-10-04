@@ -167,7 +167,7 @@ const PodList: React.FunctionComponent = () => {
             else if( pod.age > 3600 )
               age = Math.floor(pod.age / 3600).toString() + ' hour';
             else if( pod.age > 60 )
-              age = Math.floor(pod.age / 3600).toString() + 'min';
+              age = Math.floor(pod.age / 60).toString() + ' min';
             else
               age = pod.age.toString() + ' sec';
             return <span style={{ display: 'block', textAlign: 'right' }}>{age}</span>;
@@ -187,9 +187,9 @@ const PodList: React.FunctionComponent = () => {
           onRender: (pod: IPod) => {
             var text : string;
             if( pod.cpuLimit > 0 ) {
-              text = (pod.cpuUsage/1000.0).toFixed(3) + ' / ' +  (pod.cpuLimit/1000.0).toFixed(3) + ' core' 
+              text = (pod.cpuUsage/1000.0).toFixed(2) + ' / ' +  (pod.cpuLimit/1000.0).toFixed(1) + ' core' 
             } else {
-              text = (pod.cpuUsage/1000.0).toFixed(3) + ' core (no limit)' 
+              text = (pod.cpuUsage/1000.0).toFixed(2) + ' core (no limit)' 
             }
             return <div style={{ direction: 'rtl' }}><ProgressIndicator label={text} percentComplete={pod.cpuPercentage} className={classNames.progressBar} /></div>
           },
@@ -212,7 +212,7 @@ const PodList: React.FunctionComponent = () => {
               if( pod.ramLimit >= 1024 * 1024 ) {
                 text = (pod.ramUsage/1048576.0).toFixed(2) + ' / ' + (pod.ramLimit/1048576.0).toFixed(2) + ' GB' 
               } else if( pod.ramLimit >= 1024 ) {
-                text = (pod.ramUsage/1048576.0).toFixed(2) + ' / ' + (pod.ramLimit/1048576.0).toFixed(2) + ' MB' 
+                text = (pod.ramUsage/1024.0).toFixed(2) + ' / ' + (pod.ramLimit/1048576.0).toFixed(2) + ' MB' 
               } else   {
                 text = pod.ramUsage + ' / ' +  pod.ramLimit + ' KB' 
               }
@@ -220,7 +220,7 @@ const PodList: React.FunctionComponent = () => {
               if( pod.ramUsage >= 1024 * 1024 ) {
                 text = (pod.ramUsage/1048576.0).toFixed(2) + ' GB (no limit)' 
               } else if( pod.ramUsage >= 1024 ) {
-                text = (pod.ramUsage/1048576.0).toFixed(2) + ' MB (no limit)' 
+                text = (pod.ramUsage/1024.0).toFixed(2) + ' MB (no limit)' 
               } else   {
                 text = pod.ramUsage + ' KB (no limit)' 
               }
