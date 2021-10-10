@@ -103,6 +103,8 @@ Finally you should be able to access the web site. By filling the token and name
 
 ![](0.png)
 
+## Use a dedicated service account
+
 If your cluster uses RBAC, you can also run the inspector with a dedicated service account and grant proper roles. 
 Here is an example to create the service account and its role.
 
