@@ -10,9 +10,9 @@ import { IRenderFunction } from '@fluentui/react/lib/Utilities';
 import { Text } from '@fluentui/react/lib/Text';
 import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 import { Stack, IStackTokens } from '@fluentui/react';
-import { K8sToken, K8sNamespace } from './utils'
-import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 
+import { mergeStyleSets } from '@fluentui/react/lib/Styling';
+import { K8sToken, K8sNamespace } from './utils'
 import IPod from './dto'
 import Pod from './Pod'
 import './PodList.css'
@@ -225,7 +225,7 @@ const PodList: React.FunctionComponent = () => {
                 text = '? / ∞ KB' 
               }
             }
-            return <div style={{ direction: 'rtl' }}><ProgressIndicator label={text} percentComplete={pod.ramPercentage} className={classNames.progressBar} /></div>
+            return <div style={{ direction: 'rtl' }} title="`∞` means no limit on resource; `?` means metrics are not available"><ProgressIndicator label={text}  percentComplete={pod.ramPercentage} className={classNames.progressBar} /></div>
           },
           isPadded: false,
         },

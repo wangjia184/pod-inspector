@@ -13,10 +13,12 @@ import {
   HashRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from 'react-router-dom';
 import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 import { getStorageValue, useLocalStorage, K8sToken, K8sNamespace } from './utils'
 import PodList from './PodList';
+import FileViewerWrapper from './FileViewerWrapper';
 import { VERSION } from './version';
 import './App.css';
 
@@ -125,7 +127,11 @@ function App() {
         <K8sToken.Provider value={token}>
           <K8sNamespace.Provider value={namespace}>
             <Switch>
-              <Route path="/" component={PodList} />
+              <Route path="/:namespace/:pod/:container/:filepath*" component={FileViewerWrapper} />
+              <Route path="/pods" component={PodList} />
+              <Route exact path="/">
+                  <Redirect to="/pods" />
+              </Route>
             </Switch>
           </K8sNamespace.Provider>
         </K8sToken.Provider>

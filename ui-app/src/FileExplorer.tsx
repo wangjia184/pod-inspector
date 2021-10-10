@@ -12,6 +12,7 @@ import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 import { Icon } from '@fluentui/react/lib/Icon';
 import { FontIcon } from '@fluentui/react/lib/Icon';
 import { Panel, PanelType, IPanelProps } from '@fluentui/react/lib/Panel';
+import { Link } from '@fluentui/react/lib/Link';
 import { getFileTypeIconProps } from '@fluentui/react-file-type-icons';
 import FileViewer from './FileViewer'
 import { K8sToken, K8sNamespace } from './utils'
@@ -220,6 +221,20 @@ const FileExplorer: React.FunctionComponent<IFileExplorerComponentProps> = ({ po
         onColumnClick: (ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => { columnClickHandler.current(ev, column); },
         data: 'string',
         isPadded: true,
+        onRender: (file: IPodFile) => {
+          if( file.isDir ){
+            return <span>{file.name}</span>
+          } else {
+            var func = (function(){
+              return function() {
+                arguments[0].preventDefault();
+                onItemInvoked(file);
+              };
+            })();
+            let url = '/#/' + k8sNamespace + '/' + pod.name + '/' + containerName + file.path;
+            return <Link href={url} target="_blank" onClick={func}>{file.name}</Link>
+          }
+        },
       },
       {
         key: 'time',
@@ -444,7 +459,7 @@ const FileExplorer: React.FunctionComponent<IFileExplorerComponentProps> = ({ po
         closeButtonAriaLabel="Close"
         onRenderHeader={onRenderPanelHeader}
       >
-        <FileViewer podName={pod.name} containerName={containerName} filePath={selectedFile?.path || ''} />
+        <FileViewer podName={pod.name} containerName={containerName} filePath={selectedFile?.path || ''} k8sNamespace={k8sNamespace} />
       </Panel>
     </>
   );

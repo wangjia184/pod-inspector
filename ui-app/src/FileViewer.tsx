@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import AceEditor from "react-ace";
-import { K8sToken, K8sNamespace } from './utils'
+import { K8sToken } from './utils'
 import "ace-builds/src-noconflict/mode-text";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/mode-javascript";
@@ -15,16 +15,16 @@ import "ace-builds/src-noconflict/theme-monokai";
 
 
 export interface IFileViewerComponentProps {
+  k8sNamespace : string,
   podName : string,
   containerName : string,
   filePath : string,
 }
 
 
-const FileViewer: React.FunctionComponent<IFileViewerComponentProps> = ({ podName, containerName, filePath }) => {
+const FileViewer: React.FunctionComponent<IFileViewerComponentProps> = ({ podName, containerName, filePath, k8sNamespace }) => {
 
   const k8sToken = useContext(K8sToken);
-  const k8sNamespace = useContext(K8sNamespace);
   const [content, setContent] = useState<string>("");
   const [mode, setMode] = useState<string>("text");
 
@@ -86,7 +86,7 @@ const FileViewer: React.FunctionComponent<IFileViewerComponentProps> = ({ podNam
       theme="monokai"
       style= {{
         width : '100%',
-        height: 'calc(100vh - 70px)'
+        height: 'calc(100vh - 170px)'
       }}
       fontSize={14}
       showPrintMargin={false}
