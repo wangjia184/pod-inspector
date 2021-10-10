@@ -80,6 +80,8 @@ func GetPods(namespace string, token string) ([]K8sPod, error) {
 				PodIp:      item.Status.PodIP,
 				Containers: make(map[string]K8sContainer),
 				Ready:      0,
+				CpuUsage:   -1,
+				RamUsage:   -1,
 			}
 
 			if item.Status.StartTime != nil {
@@ -90,6 +92,8 @@ func GetPods(namespace string, token string) ([]K8sPod, error) {
 				pod.Containers[cs.Name] = K8sContainer{
 					Ready:        cs.Ready,
 					RestartCount: cs.RestartCount,
+					CpuUsage:     -1,
+					RamUsage:     -1,
 				}
 				if cs.Ready {
 					pod.Ready++
@@ -123,45 +127,48 @@ func GetPods(namespace string, token string) ([]K8sPod, error) {
 
 	// get metrics
 	pml, err := mc.MetricsV1beta1().PodMetricses(namespace).List(context.TODO(), metav1.ListOptions{})
-	if err != nil {
-		return nil, err
-	}
+	if err == nil {
+		// merge into result
+		for _, item := range pml.Items {
+			metadata := item.GetObjectMeta()
+			if metadata != nil {
+				if pod, ok := podMap[metadata.GetName()]; ok {
 
-	// merge into result
-	for _, item := range pml.Items {
-		metadata := item.GetObjectMeta()
-		if metadata != nil {
-			if pod, ok := podMap[metadata.GetName()]; ok {
+					for _, c := range item.Containers {
+						if container, ok := pod.Containers[c.Name]; ok {
+							cpuUsage := c.Usage.Cpu()
+							if cpuUsage != nil {
+								container.CpuUsage = cpuUsage.ScaledValue(resource.Milli)
+								if pod.CpuUsage < 0 {
+									pod.CpuUsage = 0
+								}
+								pod.CpuUsage += container.CpuUsage
 
-				for _, c := range item.Containers {
-					if container, ok := pod.Containers[c.Name]; ok {
-						cpuUsage := c.Usage.Cpu()
-						if cpuUsage != nil {
-							container.CpuUsage = cpuUsage.ScaledValue(resource.Milli)
-							pod.CpuUsage += container.CpuUsage
-
-							if pod.CpuLimit > 0 {
-								percentage := float64(pod.CpuUsage) / (float64(pod.CpuLimit) * float64(1.0))
-								pod.CpuPercentage = float32(math.Round(percentage*1000)) / float32(1000.0)
+								if pod.CpuLimit > 0 {
+									percentage := float64(pod.CpuUsage) / (float64(pod.CpuLimit) * float64(1.0))
+									pod.CpuPercentage = float32(math.Round(percentage*1000)) / float32(1000.0)
+								}
 							}
-						}
-						ramUsage := c.Usage.Memory()
-						if ramUsage != nil {
-							container.RamUsage = ramUsage.ScaledValue(resource.Kilo)
-							pod.RamUsage += container.RamUsage
+							ramUsage := c.Usage.Memory()
+							if ramUsage != nil {
+								container.RamUsage = ramUsage.ScaledValue(resource.Kilo)
+								if pod.RamUsage < 0 {
+									pod.RamUsage = 0
+								}
+								pod.RamUsage += container.RamUsage
 
-							if pod.RamLimit > 0 {
-								percentage := float64(pod.RamUsage) / (float64(pod.RamLimit) * float64(1.0))
-								pod.RamPercentage = float32(math.Round(percentage*1000)) / float32(1000.0)
+								if pod.RamLimit > 0 {
+									percentage := float64(pod.RamUsage) / (float64(pod.RamLimit) * float64(1.0))
+									pod.RamPercentage = float32(math.Round(percentage*1000)) / float32(1000.0)
+								}
 							}
+							pod.Containers[c.Name] = container
 						}
-						pod.Containers[c.Name] = container
 					}
 				}
 			}
 		}
-
-	}
+	} // if err == nil
 
 	pods := make([]K8sPod, 0, len(podMap))
 	for _, pod := range podMap {

@@ -177,7 +177,7 @@ const PodList: React.FunctionComponent = () => {
           key: 'pod-cpu',
           name: 'CPU',
           fieldName: 'cpuPercentage',
-          minWidth: 200,
+          minWidth: 250,
           maxWidth: 450,
           isResizable: true,
           isCollapsible: true,
@@ -185,12 +185,9 @@ const PodList: React.FunctionComponent = () => {
           headerClassName : 'DetailsListColumnRight',
           onColumnClick: (ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => { columnClickHandler.current(ev, column); },
           onRender: (pod: IPod) => {
-            var text : string;
-            if( pod.cpuLimit > 0 ) {
-              text = (pod.cpuUsage/1000.0).toFixed(1) + ' / ' +  (pod.cpuLimit/1000.0).toFixed(1) + ' core' 
-            } else {
-              text = (pod.cpuUsage/1000.0).toFixed(1) + ' core (no limit)' 
-            }
+            let cpuUsage = (pod.cpuUsage >= 0) ? (pod.cpuUsage/1000.0).toFixed(1) : '?';
+            let cpuLimit = (pod.cpuLimit > 0) ? (pod.cpuLimit/1000.0).toFixed(1) : '∞';
+            let text = cpuUsage + ' / ' +  cpuLimit + ' core';
             return <div style={{ direction: 'rtl' }}><ProgressIndicator label={text} percentComplete={pod.cpuPercentage} className={classNames.progressBar} /></div>
           },
           isPadded: false,
@@ -199,7 +196,7 @@ const PodList: React.FunctionComponent = () => {
           key: 'pod-ram',
           name: 'Memory',
           fieldName: 'ramPercentage',
-          minWidth: 200,
+          minWidth: 250,
           maxWidth: 450,
           isResizable: true,
           isCollapsible: true,
@@ -208,21 +205,24 @@ const PodList: React.FunctionComponent = () => {
           onColumnClick: (ev: React.MouseEvent<HTMLElement>, column: IColumn) : void => { columnClickHandler.current(ev, column); },
           onRender: (pod: IPod) => {
             var text : string;
-            if( pod.ramLimit > 0 ) {
-              if( pod.ramLimit >= 1024 * 1024 ) {
-                text = (pod.ramUsage/1048576.0).toFixed(1) + ' / ' + (pod.ramLimit/1048576.0).toFixed(1) + ' GB' 
-              } else if( pod.ramLimit >= 1024 ) {
-                text = (pod.ramUsage/1024.0).toFixed(1) + ' / ' + (pod.ramLimit/1024.0).toFixed(1) + ' MB' 
-              } else   {
-                text = pod.ramUsage + ' / ' +  pod.ramLimit + ' KB' 
-              }
+            if( pod.ramLimit >= 1024 * 1024 ) {
+              let ramUsage = (pod.ramUsage >= 0) ? (pod.ramUsage/1048576.0).toFixed(1) : '?';
+              text = ramUsage + ' / ' + (pod.ramLimit/1048576.0).toFixed(1) + ' GB' 
+            } else if( pod.ramLimit >= 1024 ) {
+              let ramUsage = (pod.ramUsage >= 0) ? (pod.ramUsage/1024.0).toFixed(1) : '?';
+              text = ramUsage + ' / ' + (pod.ramLimit/1024.0).toFixed(1) + ' MB' 
+            } else if( pod.ramLimit > 0)  {
+              let ramUsage = (pod.ramUsage >= 0) ? pod.ramUsage : '?';
+              text = ramUsage + ' / ' +  pod.ramLimit + ' KB' 
             } else {
               if( pod.ramUsage >= 1024 * 1024 ) {
-                text = (pod.ramUsage/1048576.0).toFixed(1) + ' GB (no limit)' 
+                text = (pod.ramUsage/1048576.0).toFixed(1) + ' / ∞ GB' 
               } else if( pod.ramUsage >= 1024 ) {
-                text = (pod.ramUsage/1024.0).toFixed(1) + ' MB (no limit)' 
-              } else   {
-                text = pod.ramUsage + ' KB (no limit)' 
+                text = (pod.ramUsage/1024.0).toFixed(1) + ' / ∞ MB' 
+              } else if( pod.ramUsage >= 0 )  {
+                text = pod.ramUsage + ' / ∞ KB' 
+              } else {
+                text = '? / ∞ KB' 
               }
             }
             return <div style={{ direction: 'rtl' }}><ProgressIndicator label={text} percentComplete={pod.ramPercentage} className={classNames.progressBar} /></div>
