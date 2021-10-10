@@ -105,7 +105,7 @@ Finally you should be able to access the web site. By filling the token and name
 
 ## Use a dedicated service account
 
-If your cluster uses RBAC, you can also run the inspector with a dedicated service account and grant proper roles. 
+If your cluster uses RBAC, you can also run the inspector with a dedicated service account and grant proper roles in order to use in-cluster token assigned from the service account.
 Here is an example to create the service account and its role.
 
 ```yaml
