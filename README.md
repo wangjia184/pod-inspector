@@ -126,6 +126,9 @@ rules:
 - apiGroups: [""]
   resources: ["pods/exec"]
   verbs: ["create"]
+- apiGroups: ["metrics.k8s.io"]
+  resources: ["pods", "nodes"]
+  verbs: ["get", "watch", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
